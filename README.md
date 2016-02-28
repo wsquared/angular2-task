@@ -8,8 +8,6 @@ What you need to run this app:
 * `fork` this repo
 * `clone` your fork
 * `npm install` to install all dependencies
-* `typings install` to install necessary typings
-* `npm run server` to start the dev server in another tab
 
 ## Running the app
 After you have installed all dependencies you can now run the app. Run `npm run server` to start a local server using `webpack-dev-server` which will watch, build (in-memory), and reload for you. The port will be displayed to you as `http://0.0.0.0:3000` (or if you prefer IPv6, if you're using `express` server, then it's `http://[::1]:3000/`).
@@ -53,19 +51,3 @@ npm run watch:test
 # make sure you have your server running in another terminal
 npm run e2e
 ```
-
-### run webdriver (for end-to-end)
-```bash
-npm run webdriver:update
-npm run webdriver:start
-```
-
-### run Protractor's elementExplorer (for end-to-end)
-```bash
-npm run webdriver:start
-# in another terminal
-npm run e2e:live
-```
-
-# License
- [MIT](/LICENSE)
