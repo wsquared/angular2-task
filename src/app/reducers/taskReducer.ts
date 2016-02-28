@@ -19,7 +19,7 @@ export default function(state: List<TaskModel>, action) {
         new TaskModel({
           id: task.id,
           title: task.title,
-          description: task.description,
+          details: task.details,
           dueDate: task.dueDate,
           completed: task.completed,
           completedDate: task.completedDate

@@ -1,35 +1,29 @@
-import {Component, Inject} from 'angular2/core';
+import {Component, Inject, ChangeDetectionStrategy, OnDestroy} from 'angular2/core';
 import {FORM_PROVIDERS} from 'angular2/common';
 
 import {tokenNotExpired} from 'angular2-jwt';
 
 import {Task} from './Task';
+import {TaskModel} from './taskModel';
 import {List} from 'immutable';
 import {bindActionCreators} from 'redux';
 import * as TaskActions from '../actions/taskAction';
 
 @Component({
-  selector: 'taskList',  // <task></task>
-  // We need to tell Angular's Dependency Injection which providers are in our app.
+  selector: 'taskList',
   providers: [],
-  // We need to tell Angular's compiler which directives are in our template.
-  // Doing so will allow Angular to attach our behavior to an element
-  directives: [
-    Task
-  ],
-  // We need to tell Angular's compiler which custom pipes are in our template.
+  directives: [Task],
   pipes: [],
-  // Our list of styles in our component. We may add more to compose many styles together
   styles: [require('./taskList.css')],
-  // Every Angular template is first compiled by the browser before Angular runs it's compiler
-  template: require('./taskList.html')
+  template: require('./taskList.html'),
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaskList {
+export class TaskList implements OnDestroy {
 
   protected unsubscribe: Function;
-  private tasks: Array<string>;
+  private taskList: List<TaskModel>;
+  private actions: typeof TaskActions;
 
-  // TypeScript public modifiers
   constructor( @Inject('ngRedux') ngRedux) {
     this.unsubscribe = ngRedux.connect(this.mapStateToThis, this.mapDispatchToThis)(this);
   }
@@ -39,7 +33,13 @@ export class TaskList {
   }
 
   ngOnInit() {
-    this.tasks = ['hello', 'world']
+    // Mock data for now
+    let taskModel1 = new TaskModel({ title: 'Clean floor' });
+    let taskModel2 = new TaskModel({ title: 'Wash car' });
+    let taskModelList = List<TaskModel>([taskModel1, taskModel2]);
+
+    // Need to load once backend is up.
+    this.actions.load(taskModelList);
   }
 
   ngOnDestroy() {
