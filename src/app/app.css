@@ -1,0 +1,23 @@
+.app_authentication {
+  background-color: #449d44;
+  border-color: #398439;
+  border-radius: 4px 4px 4px 4px;
+}
+
+.app_authentication > a:hover {
+  background-color: #449d44 !important;
+  border-color: #398439  !important;
+  color: white !important;
+  border-radius: 4px 4px 4px 4px !important;
+}
+
+.app_authentication > a:focus {
+  background-color: #449d44 !important;
+  border-color: #398439  !important;
+  color: white !important;
+  border-radius: 4px 4px 4px 4px !important;
+}
+
+.app_authentication-text {
+  color: white !important;
+}

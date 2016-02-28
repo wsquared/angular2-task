@@ -117,8 +117,8 @@ module.exports = helpers.validate({
       
       { test: /\.scss$/, loaders: ['style', 'css', 'postcss', 'sass'] },
       
-      // Bootstrap 4
-      { test: /bootstrap\/dist\/js\/umd\//, loader: 'imports?jQuery=jquery' },
+      // Bootstrap 3
+      { test: /bootstrap-sass\/assets\/javascripts\//, loader: 'imports?jQuery=jquery' },
       
       // Font awesome
       { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&mimetype=application/font-woff" },

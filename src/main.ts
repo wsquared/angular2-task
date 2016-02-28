@@ -6,13 +6,23 @@ import 'jquery';
 import 'bootstrap-loader';
 import 'font-awesome-webpack';
 
+
 /*
  * Providers provided by Angular
  */
 import * as ngCore from 'angular2/core';
 import * as browser from 'angular2/platform/browser';
 import {ROUTER_PROVIDERS, LocationStrategy, HashLocationStrategy} from 'angular2/router';
-import {HTTP_PROVIDERS} from 'angular2/http';
+import {HTTP_PROVIDERS, Http} from 'angular2/http';
+
+import configureStore from './app/stores/configureStore';
+const provider = require('ng2-redux').provider;
+const store = configureStore();
+
+/*
+ * Auth0
+ */
+import {AuthHttp, AuthConfig} from 'angular2-jwt';
 
 /*
  * App Environment Providers
@@ -42,7 +52,14 @@ export function main() {
     ...ENV_PROVIDERS,
     ...HTTP_PROVIDERS,
     ...ROUTER_PROVIDERS,
-    ngCore.provide(LocationStrategy, { useClass: HashLocationStrategy })
+    ngCore.provide(AuthHttp, {
+      useFactory: (http) => {
+        return new AuthHttp(new AuthConfig(), http);
+      },
+      deps: [Http]
+    }),
+    ngCore.provide(LocationStrategy, { useClass: HashLocationStrategy }),
+    provider(store)
   ])
   .catch(err => console.error(err));
 }
