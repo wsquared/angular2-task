@@ -1,5 +1,6 @@
+<taskForm></taskForm>
 <ul class="list-group">
   <li class="list-group-item" *ngFor="#task of taskList">
-    <task [task]="task"></task>
+    <task [task]="task" (taskCompleted)="taskCompleted($event)"></task>
   </li>
 </ul>

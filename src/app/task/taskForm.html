@@ -1,0 +1,8 @@
+<form [ngFormModel]="form">
+  <input ngControl="title" class="form-control" autofocus required type="text" placeholder="What needs to be done?" (keyup.enter)="add()">
+  <input ngControl="details" class="form-control" autofocus required type="text" placeholder="Details?" (keyup.enter)="add()">
+  <button type="button" class="btn btn-default btn-secondary" (click)="showDatePicker = !showDatePicker">{{getDate() }}</button>
+  <button *ngIf="showDatePicker" type="button" class="btn btn-default btn-secondary" (click)="showDatePicker = !showDatePicker"><i class="fa fa-check"></i></button>
+  <datepicker [(ngModel)]="dueDate" *ngIf="showDatePicker"></datepicker>
+  <button type="button" class="btn btn-primary" (click)="add()">Add</button>
+</form>

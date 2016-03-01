@@ -1,26 +1,26 @@
 import {Component, Inject, ChangeDetectionStrategy, OnDestroy} from 'angular2/core';
-import {FORM_PROVIDERS} from 'angular2/common';
 
 import {tokenNotExpired} from 'angular2-jwt';
 
 import {Task} from './Task';
+import {TaskForm} from './TaskForm';
 import {TaskModel} from './taskModel';
 import {List} from 'immutable';
 import {bindActionCreators} from 'redux';
 import * as TaskActions from '../actions/taskAction';
 
+import TaskCompletedEvent from './taskCompletedEvent';
+
 @Component({
   selector: 'taskList',
-  providers: [],
-  directives: [Task],
-  pipes: [],
+  directives: [Task, TaskForm],
   styles: [require('./taskList.css')],
   template: require('./taskList.html'),
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaskList implements OnDestroy {
 
-  protected unsubscribe: Function;
+  private unsubscribe: Function;
   private taskList: List<TaskModel>;
   private actions: typeof TaskActions;
 
@@ -30,6 +30,10 @@ export class TaskList implements OnDestroy {
 
   loggedIn() {
     return tokenNotExpired();
+  }
+
+  taskCompleted(event: TaskCompletedEvent) {
+    this.actions.completeTask(event.id);
   }
 
   ngOnInit() {
