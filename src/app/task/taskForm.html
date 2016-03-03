@@ -1,8 +1,19 @@
 <form [ngFormModel]="form">
-  <input ngControl="title" class="form-control" autofocus required type="text" placeholder="What needs to be done?" (keyup.enter)="add()">
-  <input ngControl="details" class="form-control" autofocus required type="text" placeholder="Details?" (keyup.enter)="add()">
-  <button type="button" class="btn btn-default btn-secondary" (click)="showDatePicker = !showDatePicker">{{getDate() }}</button>
-  <button *ngIf="showDatePicker" type="button" class="btn btn-default btn-secondary" (click)="showDatePicker = !showDatePicker"><i class="fa fa-check"></i></button>
-  <datepicker [(ngModel)]="dueDate" *ngIf="showDatePicker"></datepicker>
-  <button type="button" class="btn btn-primary" (click)="add()">Add</button>
+  <div class="row">
+    <div class="col-xs-3">
+      <input ngControl="title" class="form-control" autofocus required type="text" placeholder="What needs to be done?" (keyup.enter)="add()">
+    </div>
+    <div class="col-xs-4">
+      <input [(ngModel)]="details" class="form-control" autofocus type="text" placeholder="Details?" (keyup.enter)="add()">
+    </div>
+    <div class="col-xs-4">
+      <label for="dueDateButton">Dued: </label>
+      <button type="button" name="dueDateButton" class="btn btn-default btn-secondary" (click)="showDatePicker = !showDatePicker">{{getDate() }}</button>
+      <button *ngIf="showDatePicker" type="button" class="btn btn-default btn-secondary" (click)="showDatePicker = !showDatePicker"><i class="fa fa-check"></i></button>
+      <datepicker [(ngModel)]="dueDate" *ngIf="showDatePicker"></datepicker>
+    </div>
+    <div class="col-xs-1">
+      <button type="button" class="btn btn-primary pull-right" (click)="add()">Add</button>
+    </div>
+  </div>
 </form>

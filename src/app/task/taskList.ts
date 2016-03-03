@@ -9,7 +9,7 @@ import {List} from 'immutable';
 import {bindActionCreators} from 'redux';
 import * as TaskActions from '../actions/taskAction';
 
-import TaskCompletedEvent from './taskCompletedEvent';
+import TaskUpdatedEvent from './taskUpdatedEvent';
 
 @Component({
   selector: 'taskList',
@@ -32,15 +32,19 @@ export class TaskList implements OnDestroy {
     return tokenNotExpired();
   }
 
-  taskCompleted(event: TaskCompletedEvent) {
-    this.actions.completeTask(event.id);
+  taskUpdated(event: TaskUpdatedEvent) {
+    if (event.completed !== undefined) {
+      this.actions.completeTask(event.id);
+    }
   }
 
   ngOnInit() {
     // Mock data for now
-    let taskModel1 = new TaskModel({ title: 'Clean floor' });
-    let taskModel2 = new TaskModel({ title: 'Wash car' });
-    let taskModelList = List<TaskModel>([taskModel1, taskModel2]);
+    let taskModel1 = new TaskModel({ id: this.guid(), title: 'Clean floor' });
+    let taskModel2 = new TaskModel({ id: this.guid(), title: 'Wash car' });
+    let taskModelList = List<TaskModel>([taskModel1, taskModel2])
+      .sortBy(tm => tm.dueDate)
+      .toList();
 
     // Need to load once backend is up.
     this.actions.load(taskModelList);
@@ -58,5 +62,16 @@ export class TaskList implements OnDestroy {
 
   mapDispatchToThis(dispatch) {
     return { actions: bindActionCreators(TaskActions, dispatch) };
+  }
+
+  // Randomize guid temporary until we wire up backend
+  guid() {
+    function s4() {
+      return Math.floor((1 + Math.random()) * 0x10000)
+        .toString(16)
+        .substring(1);
+    }
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+      s4() + '-' + s4() + s4() + s4();
   }
 }

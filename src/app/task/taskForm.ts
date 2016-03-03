@@ -1,12 +1,12 @@
 import {Component, Inject, ChangeDetectionStrategy, OnDestroy} from 'angular2/core';
 import {
-FORM_DIRECTIVES,
-FORM_PROVIDERS,
-Control,
-ControlGroup,
-Validators,
-NgFormModel,
-FormBuilder
+  FORM_DIRECTIVES,
+  FORM_PROVIDERS,
+  Control,
+  ControlGroup,
+  Validators,
+  NgFormModel,
+  FormBuilder
 } from 'angular2/common';
 
 import {tokenNotExpired} from 'angular2-jwt';
@@ -34,14 +34,14 @@ export class TaskForm implements OnDestroy {
   private actions: typeof TaskActions;
   private form: ControlGroup;
   private title: Control;
-  private details: Control;
+  private details: string;
   private dueDate: Date = moment(new Date()).toDate();
   private showDatePicker: boolean = false;
 
   constructor( @Inject('ngRedux') ngRedux, private builder: FormBuilder) {
     this.unsubscribe = ngRedux.connect(this.mapStateToThis, this.mapDispatchToThis)(this);
     this.title = new Control('', Validators.required);
-    this.details = new Control('', Validators.required);
+    this.details = '';
     this.form = builder.group({
       title: this.title,
       details: this.details,
@@ -51,15 +51,17 @@ export class TaskForm implements OnDestroy {
 
   add() {
     if (!this.form.valid) return;
+    // TODO: Call to api end point to save
     this.actions.addTask(new TaskModel({
       title: this.title.value,
-      details: this.details.value,
+      details: this.details,
       dueDate: this.dueDate ? this.dueDate : new Date(),
       completed: false,
     }));
-    // No form reset feature yet unfortunately.
+    // No form reset feature yet unfortunately, so we can just set to clear values
+    // but the ngDirty and ngInvalid will still exist.
     this.title.updateValue('');
-    this.details.updateValue('');
+    this.details = '';
     this.dueDate = new Date();
   }
 

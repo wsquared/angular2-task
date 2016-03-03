@@ -27,9 +27,10 @@ export function addTask(task: TaskModel) {
   };
 }
 
-export function completeTask(id: number) {
+export function completeTask(id: string) {
   return {
     type: COMPLETE_TASK,
-    id: id
+    id: id,
+    completed: true
   };
 }

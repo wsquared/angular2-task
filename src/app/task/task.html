@@ -1,12 +1,17 @@
-<div>
-  <div (click)="isCollapsed = !isCollapsed">{{task.title}}</div>
-  <div [collapse]="isCollapsed" class="card card-block card-header">
-    <div class="well well-lg">
-      <div>Details: {{task.details}} </div>
-      <div>Due date: {{task.dueDate}}</div>
-      <div>Completed: {{task.completed}}
-        <div>Time finished: {{task.completedDate}}</div>
-      </div>
-    </div>
+<div class="row">
+  <div class="col-xs-3">
+    <button type="button" name="titleButton" class="btn btn-default btn-secondary">{{task.title}}</button>
+  </div>
+  <div class="col-xs-4">
+    <button type="button" *ngIf="task.details" name="detailsButton" class="btn btn-default btn-secondary">{{task.details}}</button>
+  </div>
+  <div class="col-xs-4">
+    <label for="dueDateButton">Dued: </label>
+    <button type="button" name="dueDateButton" class="btn btn-default btn-secondary" (click)="showDatePicker = !showDatePicker">{{ getDate() }}</button>
+    <button *ngIf="showDatePicker" type="button" class="btn btn-default btn-secondary" (click)="showDatePicker = !showDatePicker"><i class="fa fa-check"></i></button>
+    <datepicker [(ngModel)]="dueDate" *ngIf="showDatePicker"></datepicker>
+  </div>
+  <div class="col-xs-1">
+    <button type="button" class="btn btn-default btn-secondary pull-right" (click)="completeTask($event)"><i class="fa fa-check"></i></button>
   </div>
 </div>

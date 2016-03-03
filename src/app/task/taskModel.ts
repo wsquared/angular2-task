@@ -11,7 +11,7 @@ const TaskRecord = Record({
 
 export class TaskModel extends TaskRecord {
 
-  id: number;
+  id: string;
   title: string;
   details: string;
   dueDate: Date;
@@ -23,3 +23,4 @@ export class TaskModel extends TaskRecord {
   }
 
 }
+

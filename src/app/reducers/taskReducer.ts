@@ -10,7 +10,7 @@ COMPLETE_TASK
 
 export default function(state: List<TaskModel>, action) {
 
-  function indexOf(id: number) {
+  function indexOf(id: string) {
     return state.findIndex((i: TaskModel) => i.id === id);
   }
 
@@ -33,7 +33,8 @@ export default function(state: List<TaskModel>, action) {
         })
       );
     case COMPLETE_TASK:
-      let completeTask: TaskModel = state.get(indexOf(action.id));
+      let completeTaskIndex = state.findIndex((task) => task.id === action.id);
+      let completeTask: TaskModel = state.get(completeTaskIndex);
       return state.set(
         index,
         new TaskModel({
@@ -41,7 +42,7 @@ export default function(state: List<TaskModel>, action) {
           title: completeTask.title,
           details: completeTask.details,
           dueDate: completeTask.dueDate,
-          completed: true,
+          completed: action.completed,
           completedDate: completeTask.completedDate
         })
       );
