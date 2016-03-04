@@ -33,14 +33,23 @@ export class TaskList implements OnDestroy {
   }
 
   taskUpdated(event: TaskUpdatedEvent) {
+    console.log(event);
     if (event.completed !== undefined) {
       this.actions.completeTask(event.id);
     }
+    console.log(this.taskList);
   }
 
   ngOnInit() {
     // Mock data for now
-    let taskModel1 = new TaskModel({ id: this.guid(), title: 'Clean floor' });
+    let taskModel1 =
+      new TaskModel(
+        {
+          id: this.guid(), title: 'Clean floor',
+          details: 'Do everyday', completed: true,
+          completedDate: new Date()
+        }
+      );
     let taskModel2 = new TaskModel({ id: this.guid(), title: 'Wash car' });
     let taskModelList = List<TaskModel>([taskModel1, taskModel2])
       .sortBy(tm => tm.dueDate)

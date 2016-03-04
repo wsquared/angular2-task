@@ -3,9 +3,9 @@
   <div class="panel-body">
     <taskForm></taskForm>
   </div>
-  <div class="list-group">
-    <button type="button" class="list-group-item" *ngFor="#task of taskList">
+  <ul type="button" class="list-group">
+    <li class="list-group-item" *ngFor="#task of taskList">
       <task [task]="task" (taskUpdated)="taskUpdated($event)"></task>
-    </button>
-  </div>
+    </li>
+  </ul>
 </div>
