@@ -1,7 +1,7 @@
 <div class="panel panel-primary">
   <div class="panel-heading">Todo List</div>
   <div class="panel-body">
-    <taskForm></taskForm>
+    <taskForm (addTask)="addTask($event)"></taskForm>
   </div>
   <ul type="button" class="list-group">
     <li class="list-group-item" *ngFor="#task of taskList">

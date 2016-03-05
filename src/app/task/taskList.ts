@@ -3,6 +3,8 @@ import {Component, Inject, ChangeDetectionStrategy, OnDestroy} from 'angular2/co
 import {tokenNotExpired} from 'angular2-jwt';
 
 import {Task} from './Task';
+import {TaskService} from './TaskService';
+
 import {TaskForm} from './TaskForm';
 import {TaskModel} from './taskModel';
 import {List} from 'immutable';
@@ -13,6 +15,7 @@ import TaskUpdatedEvent from './taskUpdatedEvent';
 
 @Component({
   selector: 'taskList',
+  providers: [TaskService],
   directives: [Task, TaskForm],
   styles: [require('./taskList.css')],
   template: require('./taskList.html'),
@@ -24,20 +27,8 @@ export class TaskList implements OnDestroy {
   private taskList: List<TaskModel>;
   private actions: typeof TaskActions;
 
-  constructor( @Inject('ngRedux') ngRedux) {
+  constructor( @Inject('ngRedux') ngRedux, private taskService: TaskService) {
     this.unsubscribe = ngRedux.connect(this.mapStateToThis, this.mapDispatchToThis)(this);
-  }
-
-  loggedIn() {
-    return tokenNotExpired();
-  }
-
-  taskUpdated(event: TaskUpdatedEvent) {
-    console.log(event);
-    if (event.completed !== undefined) {
-      this.actions.completeTask(event.id);
-    }
-    console.log(this.taskList);
   }
 
   ngOnInit() {
@@ -57,6 +48,35 @@ export class TaskList implements OnDestroy {
 
     // Need to load once backend is up.
     this.actions.load(taskModelList);
+  }
+
+  loggedIn() {
+    return tokenNotExpired();
+  }
+
+  taskUpdated(event: TaskUpdatedEvent) {
+    console.log(event);
+    // TODO: Call api to update task
+
+    // TODO: See if we can break up all the different calls
+
+    if (event.completed !== undefined) {
+      this.actions.completeTask(event.id);
+    }
+  }
+
+  addTask(event: TaskUpdatedEvent) {
+    console.log(event);
+
+    // TODO: Call api to create new task
+
+    this.actions.addTask(new TaskModel({
+      id: this.guid(),
+      title: event.title,
+      details: event.details,
+      dueDate: event.dueDate,
+      completed: false,
+    }));
   }
 
   ngOnDestroy() {

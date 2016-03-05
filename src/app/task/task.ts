@@ -20,7 +20,7 @@ import TaskUpdatedEvent from './taskUpdatedEvent';
 export class Task {
 
   @Input() task: TaskModel;
-  @Output() taskUpdated = new EventEmitter<TaskUpdatedEvent>();
+  @Output() taskUpdated: EventEmitter<TaskUpdatedEvent> = new EventEmitter<TaskUpdatedEvent>();
   private isCollapsed: boolean = false;
   private completed: boolean;
   private canEditCompleted: boolean = false;
@@ -114,6 +114,7 @@ export class Task {
   }
 
   getCompletedDate(): string {
+    // TODO: Must be date and time
     return this.task.completedDate ? moment(this.task.completedDate).format('DD/MM/YYYY') : '-';
   }
 }

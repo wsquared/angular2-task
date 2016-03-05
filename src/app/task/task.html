@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-lg-2">
+  <div class="col-lg-3">
     <button (click)="editTitle($event)" *ngIf="!canEditTitle" type="button" name="titleButton" class="btn btn-default btn-secondary">{{task.title}}</button>
     <div class="input-group">
       <input [(ngModel)]="title" (keyup.enter)="updateTitle($event)" *ngIf="canEditTitle" class="form-control" autofocus type="text"
@@ -9,7 +9,7 @@
       </span>
     </div>
   </div>
-  <div class="col-lg-2">
+  <div class="col-lg-3">
     <div class="input-group">
       <button type="button" (click)="updateDetails($event)" *ngIf="task.details && !canEditDetails" name="detailsButton" class="btn btn-default btn-secondary">{{task.details}}</button>
       <input [(ngModel)]="details" (keyup.enter)="updateDetails($event)" *ngIf="canEditDetails" class="form-control" autofocus
@@ -19,22 +19,22 @@
       </span>
     </div>
   </div>
-  <div class="col-lg-4">
+  <div class="col-lg-3">
     <label for="dueDateButton">Dued: </label>
     <button (click)="updateDueDate($event)" type="button" name="dueDateButton" class="btn btn-default btn-secondary">{{ getDate() }}</button>
-    <!--switch when user has permission-->
     <button (click)="updateDueDate($event)" *ngIf="canEditDueDate" type="button" class="btn btn-default btn-secondary"><i class="fa fa-check"></i></button>
     <datepicker [(ngModel)]="dueDate" *ngIf="canEditDueDate"></datepicker>
   </div>
   <div class="col-lg-3">
-    <label for="completedButton" *ngIf="task.completed">Completed: </label>
-    <button type="button" *ngIf="task.completed" name="completedButton" class="btn btn-default btn-secondary" disabled>{{ getCompletedDate() }}</button>
-    <!--switch to show when user has permission-->
-  </div>
-  <div class="col-lg-1">
-    <!--disable if can't save completed task-->
-    <button (click)="completeTask($event)" type="button" *ngIf="!task.completed" class="btn btn-default btn-secondary pull-right"><i class="fa fa-check"></i></button>
-    <!-- disable unless user has permission-->
-    <button (click)="completeTask($event)" type="button" *ngIf="task.completed" class="btn btn-default btn-success pull-right"><i class="fa fa-check"></i></button>
+    <div class="input-group">
+      <!--<label for="completedButton" *ngIf="task.completed">Completed: </label>-->
+      <button type="button" *ngIf="task.completed" name="completedButton" class="btn btn-default btn-secondary form-control" disabled>{{ getCompletedDate() }}</button>
+      <!--disable if can't save completed task-->
+      <span class="input-group-btn">
+        <button (click)="completeTask($event)" type="button" *ngIf="!task.completed" class="btn btn-default btn-secondary pull-right"><i class="fa fa-check"></i></button>
+        <!-- disable unless user has permission-->
+        <button (click)="completeTask($event)" type="button" *ngIf="task.completed" class="btn btn-default btn-success pull-right"><i class="fa fa-check"></i></button>
+      </span>
+    </div>
   </div>
 </div>
