@@ -62,7 +62,7 @@ export class TaskForm {
     if (!this.form.valid) return;
     this.taskService
       .createNewTask(new TaskModel({
-        id: '',
+        id: this.guid(),
         title: this.title.value,
         details: this.details,
         dueDate: this.dueDate ? this.dueDate : new Date(),
@@ -78,7 +78,7 @@ export class TaskForm {
                 id: taskModel.id, title: taskModel.title, details: taskModel.details,
                 dueDate: taskModel.dueDate, completedDate: taskModel.completedDate
               })
-        );
+          );
         this.addTask.emit(
           {
             id: serializedTaskModel.id,
@@ -104,5 +104,16 @@ export class TaskForm {
 
   getDate() {
     return moment(this.dueDate).format('DD/MM/YYYY');
+  }
+
+  // Randomize guid temporary until we wire up backend
+  private guid() {
+    function s4() {
+      return Math.floor((1 + Math.random()) * 0x10000)
+        .toString(16)
+        .substring(1);
+    }
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+      s4() + '-' + s4() + s4() + s4();
   }
 }

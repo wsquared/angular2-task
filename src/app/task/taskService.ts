@@ -1,6 +1,6 @@
-import { Http, Headers, RequestOptions, Response } from 'angular2/http';
-import { Injectable } from 'angular2/core';
-import { Observable } from 'rxjs/Observable';
+import {Http, Headers, RequestOptions, Response} from 'angular2/http';
+import {Injectable} from 'angular2/core';
+import {Observable} from 'rxjs/Observable';
 import {
 CREATE_TASK,
 GET_TASKS,
@@ -27,15 +27,15 @@ export class TaskService {
   createNewTask(newTask: TaskModel): Observable<Response> {
     let jwt = localStorage.getItem('id_token');
     var authHeader = new Headers();
+    let task = JSON.stringify(newTask.toJS());
+
+    authHeader.append('Content-Type', 'application/json');
+
     if (jwt) {
       authHeader.append('Authorization', 'Bearer ' + jwt);
     }
-    authHeader.append('Content-Type', 'application/json');
-    return this.http.post(
-      CREATE_TASK,
-      JSON.stringify(newTask.toJS()),
-      new RequestOptions({ headers: authHeader })
-    );
+
+    return this.http.post(CREATE_TASK, task, new RequestOptions({ headers: authHeader }));
   }
 
   updateTask(task: TaskModel): Observable<Response> {

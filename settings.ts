@@ -1,4 +1,4 @@
-let BASE_URL = 'http://localhost:5000';
+let BASE_URL = 'production' === process.env.ENV ? 'Enter your prod url' : 'http://localhost:5000';
 let TASK_URL = '/api/v1/task';
 
 export const CREATE_TASK = BASE_URL + TASK_URL;
