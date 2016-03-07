@@ -171,8 +171,6 @@ export class Task {
         });
 
         this.toastr.success('Details updated for: ' + this.task.title);
-        // reset permissions
-        this.taskUpdated.emit({ id: this.task.id, details: this.details });
 
         // reset permissions
         this.canEditDetails = !this.canEditDetails;
@@ -228,8 +226,6 @@ export class Task {
         });
 
         this.toastr.success('Title updated for: ' + this.task.title);
-        // reset permissions
-        this.taskUpdated.emit({ id: this.task.id, title: this.title });
 
         // reset permissions
         this.canEditTitle = !this.canEditTitle;
