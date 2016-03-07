@@ -1,0 +1,25 @@
+<div class="panel panel-primary">
+  <div class="panel-heading">Completed Task List</div>
+  <div class="panel-body">
+    <ul type="button" class="list-group">
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col-lg-3">
+            <h4>Title</h4>
+          </div>
+          <div class="col-lg-3">
+            <h4>Details</h4>
+          </div>
+          <div class="col-lg-2">
+          </div>
+          <div class="col-lg-4">
+            <h4>Completed date and time</h4>
+          </div>
+        </div>
+      </li>
+      <li class="list-group-item" *ngFor="#taskCompleted of taskCompletedList">
+        <taskCompleted [taskCompleted]="taskCompleted"></taskCompleted>
+      </li>
+    </ul>
+  </div>
+</div>

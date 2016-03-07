@@ -10,7 +10,6 @@ const TaskRecord = Record({
 });
 
 export class TaskModel extends TaskRecord {
-
   id: string;
   title: string;
   details: string;
@@ -21,6 +20,5 @@ export class TaskModel extends TaskRecord {
   constructor(props) {
     super(props);
   }
-
 }
 

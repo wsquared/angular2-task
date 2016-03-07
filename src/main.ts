@@ -18,10 +18,20 @@ import configureStore from './app/stores/configureStore';
 const provider = require('ng2-redux').provider;
 const store = configureStore();
 
+let options = {
+  autoDismiss: true,
+  positionClass: 'toast-top-left',
+};
+
 /*
  * Auth0
  */
 import {AuthHttp, AuthConfig} from 'angular2-jwt';
+
+/*
+ * Toastr
+ */
+import {ToastOptions} from 'ng2-toastr/ng2-toastr';
 
 /*
  * App Environment Providers
@@ -58,7 +68,8 @@ export function main() {
       deps: [Http]
     }),
     ngCore.provide(LocationStrategy, { useClass: HashLocationStrategy }),
-    provider(store)
+    provider(store),
+    ngCore.provide(ToastOptions, { useValue: new ToastOptions(options) })
   ])
   .catch(err => console.error(err));
 }

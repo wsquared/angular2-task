@@ -5,7 +5,7 @@ import {
 CREATE_TASK,
 GET_TASKS,
 UPDATE_TASK,
-DELETE_TASK
+GET_COMPLETED_TASKS
 } from '../../../settings';
 
 import { TaskModel } from './taskModel';
@@ -18,6 +18,10 @@ export class TaskService {
 
   getTasks(): Observable<Response> {
     return this.http.get(GET_TASKS);
+  }
+
+  getCompletedTasks(): Observable<Response> {
+    return this.http.get(GET_COMPLETED_TASKS);
   }
 
   createNewTask(newTask: TaskModel): Observable<Response> {

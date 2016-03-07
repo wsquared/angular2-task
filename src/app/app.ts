@@ -10,6 +10,7 @@ import {Http} from 'angular2/http';
 import {RouterActive} from './directives/router-active';
 import {Home} from './home/home';
 import {TaskList} from './task/taskList';
+import {TaskCompletedList} from './task/taskCompletedList';
 
 import {AuthHttp, tokenNotExpired, JwtHelper} from 'angular2-jwt';
 import {AUTH0_CLIENT_ID, AUTH0_DOMAIN} from './auth0-variables';
@@ -32,12 +33,15 @@ declare var Auth0Lock;
 @RouteConfig([
   { path: '/', component: Home, name: 'Home' },
   { path: '/tasks', component: TaskList, name: 'Tasks' },
+  { path: '/completed', component: TaskCompletedList, name: 'Completed' },
   { path: '/**', redirectTo: ['Home'] }
 ])
 export class App {
 
   lock = new Auth0Lock(AUTH0_CLIENT_ID, AUTH0_DOMAIN);
   jwtHelper: JwtHelper = new JwtHelper();
+
+  // TODO: Incorporate toastr
 
   constructor(private authHttp: AuthHttp) { }
 

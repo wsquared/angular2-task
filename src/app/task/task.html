@@ -21,7 +21,7 @@
   </div>
   <div class="col-lg-3">
     <label for="dueDateButton">Dued: </label>
-    <button (click)="updateDueDate($event)" type="button" name="dueDateButton" class="btn btn-default btn-secondary">{{ getDate() }}</button>
+    <button (click)="updateDueDate($event)" type="button" name="dueDateButton" class="btn btn-default btn-secondary">{{ getDueDate() }}</button>
     <button (click)="updateDueDate($event)" *ngIf="canEditDueDate" type="button" class="btn btn-default btn-secondary"><i class="fa fa-check"></i></button>
     <datepicker [(ngModel)]="dueDate" *ngIf="canEditDueDate"></datepicker>
   </div>

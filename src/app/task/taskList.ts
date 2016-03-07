@@ -18,8 +18,7 @@ import TaskUpdatedEvent from './taskUpdatedEvent';
   providers: [TaskService],
   directives: [Task, TaskForm],
   styles: [require('./taskList.css')],
-  template: require('./taskList.html'),
-  changeDetection: ChangeDetectionStrategy.OnPush
+  template: require('./taskList.html')
 })
 export class TaskList implements OnDestroy {
 

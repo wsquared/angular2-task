@@ -2,16 +2,16 @@ import {List} from 'immutable';
 import {TaskModel} from '../task/taskModel';
 
 import {
-  LOAD_TASKS,
-  UPDATE_TASK,
-  ADD_TASK,
-  COMPLETE_TASK,
-  ITaskAction
+LOAD_TASKS,
+UPDATE_TASK,
+ADD_TASK,
+COMPLETE_TASK,
+ITaskAction
 } from '../actions/taskAction';
 
 export default function(state: List<TaskModel>, action: ITaskAction) {
 
-  function indexOf(id: string) {
+  function indexOf(id: string): number {
     return state.findIndex((i: TaskModel) => i.id === id);
   }
 

@@ -12,7 +12,6 @@ import TaskUpdatedEvent from './taskUpdatedEvent';
   selector: 'task',
   providers: [FORM_PROVIDERS],
   directives: [Collapse, FORM_DIRECTIVES, DATEPICKER_DIRECTIVES],
-  styles: [require('./task.css')],
   template: require('./task.html'),
   inputs: ['task'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -106,7 +105,7 @@ export class Task {
     this.canEditTitle = !this.canEditTitle;
   }
 
-  getDate(): string {
+  getDueDate(): string {
     if (!this.dueDate) {
       return this.task.dueDate ? moment(this.task.dueDate).format('DD/MM/YYYY') : '-';
     };

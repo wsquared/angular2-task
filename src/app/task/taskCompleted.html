@@ -1,0 +1,17 @@
+<div class="row">
+  <div class="col-lg-3">
+    <div type="button" class="btn btn-default btn-default form-control disabled">{{ taskCompleted.title }}</div>
+  </div>
+  <div class="col-lg-3">
+    <div type="button" class="btn btn-default btn-default form-control disabled">{{ taskCompleted.details }}</div>
+  </div>
+  <div class="col-lg-2"></div>
+  <div class="col-lg-4">
+    <div class="input-group">
+      <div type="button" class="btn btn-default btn-default form-control disabled">{{ getCompletedDate() }}</div>
+      <span class="input-group-btn">
+        <button type="button" name="completedButton" class="btn btn-success btn-secondary pull-right disabled"><i class="fa fa-check"></i></button>
+      </span>
+    </div>
+  </div>
+</div>
