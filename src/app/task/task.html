@@ -11,7 +11,7 @@
   </div>
   <div class="col-lg-3">
     <div class="input-group">
-      <button type="button" (click)="updateDetails($event)" *ngIf="task.details && !canEditDetails" name="detailsButton" class="btn btn-default btn-secondary">{{task.details}}</button>
+      <button type="button" (click)="editDetails($event)" *ngIf="!canEditDetails" name="detailsButton" class="btn btn-default btn-secondary">{{ getDetails() }}</button>
       <input [(ngModel)]="details" (keyup.enter)="updateDetails($event)" *ngIf="canEditDetails" class="form-control" autofocus
       type="text" placeholder="Details?">
       <span class="input-group-btn">
@@ -19,13 +19,13 @@
       </span>
     </div>
   </div>
-  <div class="col-lg-3">
+  <div class="col-lg-4">
     <label for="dueDateButton">Dued: </label>
-    <button (click)="updateDueDate($event)" type="button" name="dueDateButton" class="btn btn-default btn-secondary">{{ getDueDate() }}</button>
+    <button (click)="editDueDate($event)" type="button" name="dueDateButton" class="btn btn-default btn-secondary">{{ getDueDate() }}</button>
     <button (click)="updateDueDate($event)" *ngIf="canEditDueDate" type="button" class="btn btn-default btn-secondary"><i class="fa fa-check"></i></button>
     <datepicker [(ngModel)]="dueDate" *ngIf="canEditDueDate"></datepicker>
   </div>
-  <div class="col-lg-3">
+  <div class="col-lg-2">
     <!--disable if can't save completed task-->
     <button (click)="completeTask($event)" type="button" *ngIf="!task.completed" class="btn btn-default btn-secondary pull-right"><i class="fa fa-check"></i></button>
     <!-- disable unless user has permission-->

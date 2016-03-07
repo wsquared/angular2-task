@@ -5,7 +5,6 @@
 import 'jquery';
 import 'font-awesome-webpack';
 
-
 /*
  * Providers provided by Angular
  */
@@ -20,7 +19,8 @@ const store = configureStore();
 
 let options = {
   autoDismiss: true,
-  positionClass: 'toast-top-left',
+  positionClass: 'toast-top-right',
+  toastLife: '2000'
 };
 
 /*

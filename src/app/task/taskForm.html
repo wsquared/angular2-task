@@ -6,15 +6,15 @@
     <div class="col-lg-3">
       <input [(ngModel)]="details" class="form-control" autofocus type="text" placeholder="Details?" (keyup.enter)="add()">
     </div>
-    <div class="col-lg-3">
+    <div class="col-lg-4">
       <label for=" dueDateButton ">Dued: </label>
       <button type="button " name="dueDateButton " class="btn btn-default btn-secondary " (click)="showDatePicker=! showDatePicker ">{{getDate() }}</button>
       <button *ngIf="showDatePicker " type="button " class="btn btn-default btn-secondary " (click)="showDatePicker=! showDatePicker">
-        <i class="fa fa-check "></i>
+        <i class="fa fa-check"></i>
       </button>
       <datepicker [(ngModel)]="dueDate " *ngIf="showDatePicker "></datepicker>
     </div>
-    <div class="col-lg-3 ">
+    <div class="col-lg-2">
       <button type="button " class="btn btn-primary pull-right " (click)="add() ">Add</button>
     </div>
   </div>

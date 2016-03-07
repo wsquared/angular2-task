@@ -106,6 +106,10 @@ export class Task {
     this.canEditTitle = !this.canEditTitle;
   }
 
+  getDetails(): string {
+    return this.task.details ? this.task.details : '-';
+  }
+
   getDueDate(): string {
     if (!this.dueDate) {
       return this.task.dueDate ? moment(this.task.dueDate).format('DD/MM/YYYY') : '-';
