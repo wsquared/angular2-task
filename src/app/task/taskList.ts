@@ -1,12 +1,13 @@
 import {Component, Inject, ChangeDetectionStrategy, OnDestroy} from 'angular2/core';
-
 import {tokenNotExpired} from 'angular2-jwt';
+import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 
 import {Task} from './Task';
 import {TaskService} from './TaskService';
 
 import {TaskForm} from './TaskForm';
 import {TaskModel} from './taskModel';
+
 import {List} from 'immutable';
 import {bindActionCreators} from 'redux';
 import * as TaskActions from '../actions/taskAction';
@@ -15,7 +16,7 @@ import TaskUpdatedEvent from './taskUpdatedEvent';
 
 @Component({
   selector: 'taskList',
-  providers: [TaskService],
+  providers: [TaskService, ToastsManager],
   directives: [Task, TaskForm],
   styles: [require('./taskList.css')],
   template: require('./taskList.html')
@@ -26,27 +27,34 @@ export class TaskList implements OnDestroy {
   private taskList: List<TaskModel>;
   private actions: typeof TaskActions;
 
-  constructor( @Inject('ngRedux') ngRedux, private taskService: TaskService) {
+  constructor
+    ( @Inject('ngRedux') ngRedux, private taskService: TaskService, private toastr: ToastsManager) {
     this.unsubscribe = ngRedux.connect(this.mapStateToThis, this.mapDispatchToThis)(this);
   }
 
   ngOnInit() {
-    // Mock data for now
-    let taskModel1 =
-      new TaskModel(
-        {
-          id: this.guid(), title: 'Clean floor',
-          details: 'Do everyday', completed: true,
-          completedDate: new Date()
-        }
+    this.taskService
+      .getTasks()
+      .subscribe
+      (
+      res => {
+        let serializedTaskList = (<List<TaskModel>>res.json())
+          .map(
+          (taskModel: any) =>
+            new TaskModel
+              ({
+                id: taskModel.id, title: taskModel.title, details: taskModel.details,
+                dueDate: taskModel.dueDate, completedDate: taskModel.completedDate
+              })
+          );
+        this.taskList = List<TaskModel>(serializedTaskList);
+        this.actions.load(this.taskList);
+        this.toastr.success('Todo list loaded!');
+      },
+      err => {
+        this.toastr.error('This is not good!', 'Oops!' + err);
+      }
       );
-    let taskModel2 = new TaskModel({ id: this.guid(), title: 'Wash car' });
-    let taskModelList = List<TaskModel>([taskModel1, taskModel2])
-      .sortBy(tm => tm.dueDate)
-      .toList();
-
-    // Need to load once backend is up.
-    this.actions.load(taskModelList);
   }
 
   loggedIn() {
@@ -54,23 +62,23 @@ export class TaskList implements OnDestroy {
   }
 
   taskUpdated(event: TaskUpdatedEvent) {
-    console.log(event);
-    // TODO: Call api to update task
-
-    // TODO: See if we can break up all the different calls
-
     if (event.completed !== undefined) {
       this.actions.completeTask(event.id);
+    } else {
+      this.actions.updateTask(new TaskModel({
+        id: event.id,
+        title: event.title,
+        details: event.details,
+        dueDate: event.dueDate,
+        completed: event.completed,
+        completedDate: event.completedDate
+      }));
     }
   }
 
   addTask(event: TaskUpdatedEvent) {
-    console.log(event);
-
-    // TODO: Call api to create new task
-
     this.actions.addTask(new TaskModel({
-      id: this.guid(),
+      id: event.id,
       title: event.title,
       details: event.details,
       dueDate: event.dueDate,
@@ -90,16 +98,5 @@ export class TaskList implements OnDestroy {
 
   mapDispatchToThis(dispatch) {
     return { actions: bindActionCreators(TaskActions, dispatch) };
-  }
-
-  // Randomize guid temporary until we wire up backend
-  guid() {
-    function s4() {
-      return Math.floor((1 + Math.random()) * 0x10000)
-        .toString(16)
-        .substring(1);
-    }
-    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-      s4() + '-' + s4() + s4() + s4();
   }
 }

@@ -26,15 +26,9 @@
     <datepicker [(ngModel)]="dueDate" *ngIf="canEditDueDate"></datepicker>
   </div>
   <div class="col-lg-3">
-    <div class="input-group">
-      <!--<label for="completedButton" *ngIf="task.completed">Completed: </label>-->
-      <button type="button" *ngIf="task.completed" name="completedButton" class="btn btn-default btn-secondary form-control" disabled>{{ getCompletedDate() }}</button>
-      <!--disable if can't save completed task-->
-      <span class="input-group-btn">
-        <button (click)="completeTask($event)" type="button" *ngIf="!task.completed" class="btn btn-default btn-secondary pull-right"><i class="fa fa-check"></i></button>
-        <!-- disable unless user has permission-->
-        <button (click)="completeTask($event)" type="button" *ngIf="task.completed" class="btn btn-default btn-success pull-right"><i class="fa fa-check"></i></button>
-      </span>
-    </div>
+    <!--disable if can't save completed task-->
+    <button (click)="completeTask($event)" type="button" *ngIf="!task.completed" class="btn btn-default btn-secondary pull-right"><i class="fa fa-check"></i></button>
+    <!-- disable unless user has permission-->
+    <button (click)="completeTask($event)" type="button" *ngIf="task.completed" class="btn btn-default btn-success pull-right"><i class="fa fa-check"></i></button>
   </div>
 </div>

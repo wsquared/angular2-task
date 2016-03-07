@@ -2,6 +2,7 @@ import {Component, Input, Output, ChangeDetectionStrategy, EventEmitter} from 'a
 import {FORM_PROVIDERS, FORM_DIRECTIVES} from 'angular2/common';
 
 import {TaskModel} from './taskModel';
+import {TaskService} from './TaskService';
 
 import {Collapse, DATEPICKER_DIRECTIVES} from 'ng2-bootstrap';
 
@@ -10,8 +11,8 @@ import TaskUpdatedEvent from './taskUpdatedEvent';
 
 @Component({
   selector: 'task',
-  providers: [FORM_PROVIDERS],
-  directives: [Collapse, FORM_DIRECTIVES, DATEPICKER_DIRECTIVES],
+  providers: [FORM_PROVIDERS, TaskService],
+  directives: [FORM_DIRECTIVES, DATEPICKER_DIRECTIVES, Collapse],
   template: require('./task.html'),
   inputs: ['task'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -30,7 +31,7 @@ export class Task {
   private title: string;
   private canEditTitle: boolean = false;
 
-  constructor() {
+  constructor(private taskService: TaskService) {
   }
 
   ngOnInit() {
