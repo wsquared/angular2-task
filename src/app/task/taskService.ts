@@ -49,7 +49,7 @@ export class TaskService {
     }
 
     return this.http.put(
-      UPDATE_TASK, JSON.stringify(task.toJS()),
+      UPDATE_TASK + '/' + task.id, JSON.stringify(task.toJS()),
       new RequestOptions({ headers: authHeader })
     );
   }

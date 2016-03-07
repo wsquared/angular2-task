@@ -15,6 +15,8 @@ import {TaskCompletedList} from './task/taskCompletedList';
 import {AuthHttp, tokenNotExpired, JwtHelper} from 'angular2-jwt';
 import {AUTH0_CLIENT_ID, AUTH0_DOMAIN} from './auth0-variables';
 
+import {ToastsManager} from 'ng2-toastr/ng2-toastr';
+
 // Global variable for Auth0
 declare var Auth0Lock;
 
@@ -24,9 +26,8 @@ declare var Auth0Lock;
  */
 @Component({
   selector: 'app',
-  providers: [...FORM_PROVIDERS],
+  providers: [...FORM_PROVIDERS, ToastsManager],
   directives: [...ROUTER_DIRECTIVES, RouterActive],
-  pipes: [],
   styles: [require('./app.css')],
   template: require('./app.html')
 })
@@ -43,7 +44,7 @@ export class App {
 
   // TODO: Incorporate toastr
 
-  constructor(private authHttp: AuthHttp) { }
+  constructor(private authHttp: AuthHttp, private toastr: ToastsManager) { }
 
   login() {
     this.lock.show((err: string, profile: string, id_token: string) => {
@@ -53,12 +54,14 @@ export class App {
       }
       localStorage.setItem('profile', JSON.stringify(profile));
       localStorage.setItem('id_token', id_token);
+      this.toastr.success('Login successful! Have a beer!');
     });
   }
 
   logout() {
     localStorage.removeItem('profile');
     localStorage.removeItem('id_token');
+    this.toastr.success('Logout successful... Bye bye :(');
   }
 
   loggedIn() {

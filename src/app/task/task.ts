@@ -9,6 +9,9 @@ import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 
 import * as moment from 'moment';
 import TaskUpdatedEvent from './taskUpdatedEvent';
+import TaskCompletedEvent from './taskCompletedEvent';
+
+import {tokenNotExpired} from 'angular2-jwt';
 
 @Component({
   selector: 'task',
@@ -22,6 +25,8 @@ export class Task {
 
   @Input() task: TaskModel;
   @Output() taskUpdated: EventEmitter<TaskUpdatedEvent> = new EventEmitter<TaskUpdatedEvent>();
+  @Output() taskCompleted: EventEmitter<TaskCompletedEvent> =
+  new EventEmitter<TaskCompletedEvent>();
   private isCollapsed: boolean = false;
   private completed: boolean;
   private canEditCompleted: boolean = false;
@@ -42,14 +47,20 @@ export class Task {
   }
 
   completeTask(event: Event): void {
-    // TODO check permissions
+    // Check logged in
+    if (!this.loggedIn()) {
+      this.toastr.error('You are not authorized to do this');
+      return;
+    }
 
     this.taskService
       .updateToComplete(this.task.id)
       .subscribe(
       res => {
+        this.toastr.success('Congrats you completed your task!');
+
         // emit to be dispatched
-        this.taskUpdated.emit({ id: this.task.id, completed: true });
+        this.taskCompleted.emit({ id: this.task.id, completed: true });
 
         // reset permissions
         this.canEditCompleted = !this.canEditCompleted;
@@ -62,31 +73,74 @@ export class Task {
   }
 
   editDueDate(event: Event): void {
-    // check permissions
+    // Check logged in
+    if (!this.loggedIn()) {
+      this.toastr.error('You are not authorized to do this');
+      return;
+    }
     this.canEditDueDate = !this.canEditDueDate;
   }
 
-
   updateDueDate(event: Event): void {
     // check permissions
+    if (!this.loggedIn()) {
+      this.toastr.error('You are not authorized to do this');
+      return;
+    }
+
+    let updateDueDateTaskModel = new TaskModel({
+      id: this.task.id,
+      title: this.task.title,
+      details: this.task.details,
+      dueDate: this.dueDate,
+      completed: this.task.completed,
+      completedDate: this.task.completedDate
+    });
 
     // run update due date
-
-    // emit to be dispatched
-    this.taskUpdated.emit({ id: this.task.id, dueDate: moment(this.dueDate).toDate() });
-
-    // reset permissions
-    this.canEditDueDate = !this.canEditDueDate;
+    this.taskService
+      .updateTask(updateDueDateTaskModel)
+      .map(res => res.json())
+      .subscribe
+      (
+      res => {
+        let taskModel = new TaskModel(res);
+        // emit to be dispatched
+        this.taskUpdated.emit(new TaskUpdatedEvent(){
+          id: taskModel.id,
+          title: taskModel.title,
+          details: taskModel.details,
+          completed: taskModel.completed,
+          dueDate: taskModel.dueDate,
+          completedDate: taskModel.completedDate
+        });
+        this.toastr.success('Due date updated for: ' + taskModel.title);
+        // reset permissions
+        this.canEditDueDate = !this.canEditDueDate;
+      },
+      err => {
+        this.toastr.error('This is not good!', 'Oops!' + err);
+        this.canEditDueDate = !this.canEditDueDate;
+      }
+      );
   }
 
   editDetails(event: Event): void {
     // check permissions
+    if (!this.loggedIn()) {
+      this.toastr.error('You are not authorized to do this');
+      return;
+    }
+
     this.canEditDetails = !this.canEditDetails;
   }
 
   updateDetails(event: Event): void {
     // check permissions
-
+    if (!this.loggedIn()) {
+      this.toastr.error('You are not authorized to do this');
+      return;
+    }
     // run updateDetails
 
     // emit to be dispatched
@@ -98,14 +152,20 @@ export class Task {
 
   editTitle(event: Event): void {
     // check permissions
-
+    if (!this.loggedIn()) {
+      this.toastr.error('You are not authorized to do this');
+      return;
+    }
     // Go
     this.canEditTitle = !this.canEditTitle;
   }
 
   updateTitle(event: Event): void {
     // check permissions
-
+    if (!this.loggedIn()) {
+      this.toastr.error('You are not authorized to do this');
+      return;
+    }
     // run updateTitle
 
     // emit to be dispatched
@@ -113,6 +173,10 @@ export class Task {
 
     // reset permissions
     this.canEditTitle = !this.canEditTitle;
+  }
+
+  loggedIn() {
+    return tokenNotExpired();
   }
 
   getDetails(): string {

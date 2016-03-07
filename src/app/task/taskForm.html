@@ -8,7 +8,7 @@
     </div>
     <div class="col-lg-4">
       <label for=" dueDateButton ">Dued: </label>
-      <button type="button " name="dueDateButton " class="btn btn-default btn-secondary " (click)="showDatePicker=! showDatePicker ">{{getDate() }}</button>
+      <button type="button " name="dueDateButton " class="btn btn-default btn-secondary " (click)="showDatePicker=! showDatePicker ">{{ getDueDate() }}</button>
       <button *ngIf="showDatePicker " type="button " class="btn btn-default btn-secondary " (click)="showDatePicker=! showDatePicker">
         <i class="fa fa-check"></i>
       </button>

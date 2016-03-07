@@ -34,9 +34,8 @@ export default function(state: List<TaskModel>, action: ITaskAction) {
         })
       );
     case COMPLETE_TASK:
-      let completeTaskIndex = state.findIndex((task) => task.id === action.id);
-      let completeTask: TaskModel = state.get(completeTaskIndex);
-      return state.delete(index);
+      let completedTaskIndex = state.findIndex((task) => task.id === action.id);
+      return state.delete(completedTaskIndex);
     case ADD_TASK:
       return state.push(action.task);
     default:

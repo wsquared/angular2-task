@@ -1,4 +1,5 @@
 import {Component, Inject, ChangeDetectionStrategy, OnDestroy} from 'angular2/core';
+import {Router} from 'angular2/router';
 import {tokenNotExpired} from 'angular2-jwt';
 import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 
@@ -13,13 +14,15 @@ import {bindActionCreators} from 'redux';
 import * as TaskActions from '../actions/taskAction';
 
 import TaskUpdatedEvent from './taskUpdatedEvent';
+import TaskCompletedEvent from './taskCompletedEvent';
 
 @Component({
   selector: 'taskList',
   providers: [TaskService, ToastsManager],
   directives: [Task, TaskForm],
   styles: [require('./taskList.css')],
-  template: require('./taskList.html')
+  template: require('./taskList.html'),
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaskList implements OnDestroy {
 
@@ -28,11 +31,20 @@ export class TaskList implements OnDestroy {
   private actions: typeof TaskActions;
 
   constructor
-    ( @Inject('ngRedux') ngRedux, private taskService: TaskService, private toastr: ToastsManager) {
+    (
+    @Inject('ngRedux') ngRedux,
+    private taskService: TaskService,
+    private toastr: ToastsManager,
+    private router: Router
+    ) {
     this.unsubscribe = ngRedux.connect(this.mapStateToThis, this.mapDispatchToThis)(this);
   }
 
   ngOnInit() {
+    this.loadTasks();
+  }
+
+  loadTasks() {
     this.taskService
       .getTasks()
       .subscribe
@@ -62,18 +74,18 @@ export class TaskList implements OnDestroy {
   }
 
   taskUpdated(event: TaskUpdatedEvent) {
-    if (event.completed !== undefined) {
-      this.actions.completeTask(event.id);
-    } else {
-      this.actions.updateTask(new TaskModel({
-        id: event.id,
-        title: event.title,
-        details: event.details,
-        dueDate: event.dueDate,
-        completed: event.completed,
-        completedDate: event.completedDate
-      }));
-    }
+    this.actions.updateTask(new TaskModel({
+      id: event.id,
+      title: event.title,
+      details: event.details,
+      dueDate: event.dueDate,
+      completed: event.completed,
+      completedDate: event.completedDate
+    }));
+  }
+
+  taskCompleted(event: TaskCompletedEvent) {
+    this.actions.completeTask(event.id);
   }
 
   addTask(event: TaskUpdatedEvent) {

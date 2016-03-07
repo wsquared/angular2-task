@@ -5,7 +5,7 @@
   </div>
   <ul type="button" class="list-group">
     <li class="list-group-item" *ngFor="#task of taskList">
-      <task [task]="task" (taskUpdated)="taskUpdated($event)"></task>
+      <task [task]="task" (taskUpdated)="taskUpdated($event)" (taskCompleted)="taskCompleted($event)"></task>
     </li>
   </ul>
 </div>

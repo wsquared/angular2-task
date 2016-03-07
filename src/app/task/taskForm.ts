@@ -38,7 +38,7 @@ export class TaskForm {
   private form: ControlGroup;
   private title: Control;
   private details: string;
-  private dueDate: Date = moment(new Date()).toDate();
+  private dueDate: Date;
   private showDatePicker: boolean = false;
 
   constructor
@@ -66,7 +66,7 @@ export class TaskForm {
         id: this.guid(),
         title: this.title.value,
         details: this.details,
-        dueDate: this.dueDate ? this.dueDate : new Date(),
+        dueDate: this.dueDate,
         completed: false,
       }))
       .map(response => response.json())
@@ -96,11 +96,13 @@ export class TaskForm {
     this.dueDate = new Date();
   }
 
-  getDate() {
-    return moment(this.dueDate).format('DD/MM/YYYY');
+  getDueDate() {
+    return this.dueDate ? moment(this.dueDate).format('DD/MM/YYYY') : '-';
   }
 
-  // Randomize guid temporary until we wire up backend
+  // Randomize guid - note: this guid won't be saved to the 
+  // database, but will be used to bind to the backend view model
+  // so a call can be made
   private guid() {
     function s4() {
       return Math.floor((1 + Math.random()) * 0x10000)
