@@ -10,7 +10,8 @@ What you need to run this app:
 * `npm install` to install all dependencies
 
 ## Running the app
-After you have installed all dependencies you can now run the app. Run `npm run server` to start a local server using `webpack-dev-server` which will watch, build (in-memory), and reload for you. The port will be displayed to you as `http://0.0.0.0:3000` (or if you prefer IPv6, if you're using `express` server, then it's `http://[::1]:3000/`).
+After you have installed all dependencies you can now run the app. Run `npm start` to start a local server using `webpack-dev-server` 
+which will watch, build (in-memory), and reload for you. Please make sure you have started the backend project.
 
 ### server
 ```bash
@@ -46,8 +47,5 @@ npm run test
 npm run watch:test
 ```
 
-### run end-to-end tests
-```bash
-# make sure you have your server running in another terminal
-npm run e2e
-```
+### special note
+Thanks to the angular class team for having a starter kit I can work with.
