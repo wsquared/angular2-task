@@ -5,13 +5,14 @@ import {TaskModel} from './taskModel';
 import {TaskService} from './TaskService';
 
 import {Collapse, DATEPICKER_DIRECTIVES} from 'ng2-bootstrap';
+import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 
 import * as moment from 'moment';
 import TaskUpdatedEvent from './taskUpdatedEvent';
 
 @Component({
   selector: 'task',
-  providers: [FORM_PROVIDERS, TaskService],
+  providers: [FORM_PROVIDERS, TaskService, ToastsManager],
   directives: [FORM_DIRECTIVES, DATEPICKER_DIRECTIVES, Collapse],
   template: require('./task.html'),
   inputs: ['task'],
@@ -31,7 +32,7 @@ export class Task {
   private title: string;
   private canEditTitle: boolean = false;
 
-  constructor(private taskService: TaskService) {
+  constructor(private taskService: TaskService, private toastr: ToastsManager) {
   }
 
   ngOnInit() {
@@ -41,15 +42,23 @@ export class Task {
   }
 
   completeTask(event: Event): void {
-    // check permissions
+    // TODO check permissions
 
-    // run complete task
+    this.taskService
+      .updateToComplete(this.task.id)
+      .subscribe(
+      res => {
+        // emit to be dispatched
+        this.taskUpdated.emit({ id: this.task.id, completed: true });
 
-    // emit to be dispatched
-    this.taskUpdated.emit({ id: this.task.id, completed: true });
-
-    // reset permissions
-    this.canEditCompleted = !this.canEditCompleted;
+        // reset permissions
+        this.canEditCompleted = !this.canEditCompleted;
+      },
+      err => {
+        this.toastr.error('This is not good!', 'Oops!' + err);
+        this.canEditCompleted = !this.canEditCompleted;
+      }
+      );
   }
 
   editDueDate(event: Event): void {

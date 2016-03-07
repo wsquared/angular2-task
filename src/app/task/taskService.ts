@@ -40,10 +40,14 @@ export class TaskService {
 
   updateTask(task: TaskModel): Observable<Response> {
     let jwt = localStorage.getItem('id_token');
+
     var authHeader = new Headers();
+    authHeader.append('Content-Type', 'application/json');
+
     if (jwt) {
       authHeader.append('Authorization', 'Bearer ' + jwt);
     }
+
     return this.http.put(
       UPDATE_TASK, JSON.stringify(task.toJS()),
       new RequestOptions({ headers: authHeader })
@@ -52,11 +56,16 @@ export class TaskService {
 
   updateToComplete(id: string): Observable<Response> {
     let jwt = localStorage.getItem('id_token');
+
     var authHeader = new Headers();
+    authHeader.append('Content-Type', 'application/json');
+
     if (jwt) {
       authHeader.append('Authorization', 'Bearer ' + jwt);
     }
-    return this.http.put(UPDATE_TASK + '/' + id, '');
+    return this.http.put(
+      UPDATE_TASK + '/' + id + '/complete', '',
+      new RequestOptions({ headers: authHeader }));
   }
 
 };
