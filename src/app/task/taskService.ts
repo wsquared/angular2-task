@@ -49,4 +49,14 @@ export class TaskService {
       new RequestOptions({ headers: authHeader })
     );
   }
+
+  updateToComplete(id: string): Observable<Response> {
+    let jwt = localStorage.getItem('id_token');
+    var authHeader = new Headers();
+    if (jwt) {
+      authHeader.append('Authorization', 'Bearer ' + jwt);
+    }
+    return this.http.put(UPDATE_TASK + '/' + id, '');
+  }
+
 };

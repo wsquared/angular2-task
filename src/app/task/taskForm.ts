@@ -12,7 +12,7 @@ Validators,
 NgFormModel,
 FormBuilder
 } from 'angular2/common';
-import {ToastsManager} from 'ng2-toastr/ng2-toastr'
+import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 
 import {tokenNotExpired} from 'angular2-jwt';
 
@@ -60,6 +60,7 @@ export class TaskForm {
 
   add() {
     if (!this.form.valid) return;
+
     this.taskService
       .createNewTask(new TaskModel({
         id: this.guid(),
@@ -68,25 +69,18 @@ export class TaskForm {
         dueDate: this.dueDate ? this.dueDate : new Date(),
         completed: false,
       }))
+      .map(response => response.json())
       .subscribe(
       res => {
-        let serializedTaskModel = (res.json())
-          .map(
-          (taskModel: any) =>
-            new TaskModel
-              ({
-                id: taskModel.id, title: taskModel.title, details: taskModel.details,
-                dueDate: taskModel.dueDate, completedDate: taskModel.completedDate
-              })
-          );
+        let taskModel = new TaskModel(res);
         this.addTask.emit(
           {
-            id: serializedTaskModel.id,
-            title: serializedTaskModel.title,
-            details: serializedTaskModel.details,
-            dueDate: serializedTaskModel.dueDate,
+            id: taskModel.id,
+            title: taskModel.title,
+            details: taskModel.details,
+            dueDate: taskModel.dueDate,
             completed: false,
-            completedDate: serializedTaskModel.completedDate
+            completedDate: taskModel.completedDate
           });
         this.toastr.success('Created new task!');
       },
