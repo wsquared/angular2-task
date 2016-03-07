@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-lg-3">
-    <button (click)="editTitle($event)" *ngIf="!canEditTitle" type="button" name="titleButton" class="btn btn-default btn-secondary">{{task.title}}</button>
+    <button (click)="editTitle($event)" *ngIf="!canEditTitle" type="button" name="titleButton" class="btn btn-default btn-secondary" [ngClass]="{disabled: !loggedIn()}">{{task.title}}</button>
     <div class="input-group">
       <input [(ngModel)]="title" (keyup.enter)="updateTitle($event)" *ngIf="canEditTitle" class="form-control" autofocus type="text"
       placeholder="Details?">
@@ -11,7 +11,7 @@
   </div>
   <div class="col-lg-3">
     <div class="input-group">
-      <button type="button" (click)="editDetails($event)" *ngIf="!canEditDetails" name="detailsButton" class="btn btn-default btn-secondary">{{ getDetails() }}</button>
+      <button type="button" (click)="editDetails($event)" *ngIf="!canEditDetails" name="detailsButton" class="btn btn-default btn-secondary" [ngClass]="{disabled: !loggedIn()}">{{ getDetails() }}</button>
       <input [(ngModel)]="details" (keyup.enter)="updateDetails($event)" *ngIf="canEditDetails" class="form-control" autofocus
       type="text" placeholder="Details?">
       <span class="input-group-btn">
@@ -21,14 +21,11 @@
   </div>
   <div class="col-lg-4">
     <label for="dueDateButton">Dued: </label>
-    <button (click)="editDueDate($event)" type="button" name="dueDateButton" class="btn btn-default btn-secondary">{{ getDueDate() }}</button>
+    <button (click)="editDueDate($event)" type="button" name="dueDateButton" class="btn btn-default btn-secondary" [ngClass]="{disabled: !loggedIn()}">{{ getDueDate() }}</button>
     <button (click)="updateDueDate($event)" *ngIf="canEditDueDate" type="button" class="btn btn-default btn-secondary"><i class="fa fa-check"></i></button>
     <datepicker [(ngModel)]="dueDate" *ngIf="canEditDueDate"></datepicker>
   </div>
   <div class="col-lg-2">
-    <!--disable if can't save completed task-->
-    <button (click)="completeTask($event)" type="button" *ngIf="!task.completed" class="btn btn-default btn-secondary pull-right"><i class="fa fa-check"></i></button>
-    <!-- disable unless user has permission-->
-    <button (click)="completeTask($event)" type="button" *ngIf="task.completed" class="btn btn-default btn-success pull-right"><i class="fa fa-check"></i></button>
+    <button (click)="completeTask($event)" type="button" *ngIf="!task.completed" class="btn btn-default btn-secondary pull-right" [ngClass]="{disabled: !loggedIn()}"><i class="fa fa-check"></i></button>
   </div>
 </div>

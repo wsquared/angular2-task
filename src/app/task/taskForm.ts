@@ -61,6 +61,12 @@ export class TaskForm {
   add() {
     if (!this.form.valid) return;
 
+    // check permissions
+    if (!this.loggedIn()) {
+      this.toastr.error('You are not authorized to do this');
+      return;
+    }
+
     this.taskService
       .createNewTask(new TaskModel({
         id: this.guid(),
@@ -96,8 +102,23 @@ export class TaskForm {
     this.dueDate = new Date();
   }
 
+  toggleDatePicker(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    // check permissions
+    if (!this.loggedIn()) {
+      this.toastr.error('You are not authorized to do this');
+      return;
+    }
+    this.showDatePicker = !this.showDatePicker;
+  }
+
   getDueDate() {
     return this.dueDate ? moment(this.dueDate).format('DD/MM/YYYY') : '-';
+  }
+
+  loggedIn() {
+    return tokenNotExpired();
   }
 
   // Randomize guid - note: this guid won't be saved to the 

@@ -1,21 +1,24 @@
 <form [ngFormModel]="form">
   <div class="row">
     <div class="col-lg-3">
-      <input ngControl="title" class="form-control" autofocus required type="text" placeholder="What needs to be done?" (keyup.enter)="add()">
+      <input ngControl="title" class="form-control" autofocus required type="text" placeholder="What needs to be done?" (keyup.enter)="add()"
+      [disabled]="!loggedIn()">
     </div>
     <div class="col-lg-3">
-      <input [(ngModel)]="details" class="form-control" autofocus type="text" placeholder="Details?" (keyup.enter)="add()">
+      <input [(ngModel)]="details" class="form-control" autofocus type="text" placeholder="Details?" (keyup.enter)="add()" [disabled]="!loggedIn()">
     </div>
     <div class="col-lg-4">
       <label for=" dueDateButton ">Dued: </label>
-      <button type="button " name="dueDateButton " class="btn btn-default btn-secondary " (click)="showDatePicker=! showDatePicker ">{{ getDueDate() }}</button>
-      <button *ngIf="showDatePicker " type="button " class="btn btn-default btn-secondary " (click)="showDatePicker=! showDatePicker">
+      <button type="button" name="dueDateButton " class="btn btn-default btn-secondary " (click)="toggleDatePicker($event)"
+      [ngClass]="{disabled: !loggedIn()}">{{ getDueDate() }}</button>
+      <button *ngIf="showDatePicker" type="button " class="btn btn-default btn-secondary " (click)="toggleDatePicker($event)"
+      [ngClass]="{disabled: !loggedIn()}">
         <i class="fa fa-check"></i>
       </button>
-      <datepicker [(ngModel)]="dueDate " *ngIf="showDatePicker "></datepicker>
+      <datepicker [(ngModel)]="dueDate " *ngIf="showDatePicker"></datepicker>
     </div>
     <div class="col-lg-2">
-      <button type="button " class="btn btn-primary pull-right " (click)="add() ">Add</button>
+      <button type="button " class="btn btn-primary pull-right" (click)="add()" [ngClass]="{disabled: !loggedIn()}">Add</button>
     </div>
   </div>
 </form>
