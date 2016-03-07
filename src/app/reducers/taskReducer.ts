@@ -21,16 +21,15 @@ export default function(state: List<TaskModel>, action: ITaskAction) {
       return List<TaskModel>(state);
     case UPDATE_TASK:
       let index = state.findIndex((task) => task.id === action.task.id);
-      let updateTask: TaskModel = state.get(index);
       return state.set(
         index,
         new TaskModel({
-          id: updateTask.id,
-          title: updateTask.title,
-          details: updateTask.details,
-          dueDate: updateTask.dueDate,
-          completed: updateTask.completed,
-          completedDate: updateTask.completedDate
+          id: action.task.id,
+          title: action.task.title,
+          details: action.task.details,
+          dueDate: action.task.dueDate,
+          completed: action.task.completed,
+          completedDate: action.task.completedDate
         })
       );
     case COMPLETE_TASK:

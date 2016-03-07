@@ -21,8 +21,7 @@ import TaskCompletedEvent from './taskCompletedEvent';
   providers: [TaskService, ToastsManager],
   directives: [Task, TaskForm],
   styles: [require('./taskList.css')],
-  template: require('./taskList.html'),
-  changeDetection: ChangeDetectionStrategy.OnPush
+  template: require('./taskList.html')
 })
 export class TaskList implements OnDestroy {
 
@@ -41,25 +40,13 @@ export class TaskList implements OnDestroy {
   }
 
   ngOnInit() {
-    this.loadTasks();
-  }
-
-  loadTasks() {
     this.taskService
       .getTasks()
+      .map(response => response.json())
       .subscribe
       (
       res => {
-        let serializedTaskList = (<List<TaskModel>>res.json())
-          .map(
-          (taskModel: any) =>
-            new TaskModel
-              ({
-                id: taskModel.id, title: taskModel.title, details: taskModel.details,
-                dueDate: taskModel.dueDate, completedDate: taskModel.completedDate
-              })
-          );
-        this.taskList = List<TaskModel>(serializedTaskList);
+        this.taskList = List<TaskModel>(res);
         this.actions.load(this.taskList);
         this.toastr.success('Todo list loaded!');
       },

@@ -60,7 +60,7 @@ export class Task {
         this.toastr.success('Congrats you completed your task!');
 
         // emit to be dispatched
-        this.taskCompleted.emit({ id: this.task.id, completed: true });
+        this.taskCompleted.emit({ id: this.task.id });
 
         // reset permissions
         this.canEditCompleted = !this.canEditCompleted;
@@ -73,6 +73,8 @@ export class Task {
   }
 
   editDueDate(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
     // Check logged in
     if (!this.loggedIn()) {
       this.toastr.error('You are not authorized to do this');
@@ -82,6 +84,8 @@ export class Task {
   }
 
   updateDueDate(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
     // check permissions
     if (!this.loggedIn()) {
       this.toastr.error('You are not authorized to do this');
@@ -100,21 +104,21 @@ export class Task {
     // run update due date
     this.taskService
       .updateTask(updateDueDateTaskModel)
-      .map(res => res.json())
       .subscribe
       (
       res => {
-        let taskModel = new TaskModel(res);
+        console.log(res);
         // emit to be dispatched
-        this.taskUpdated.emit(new TaskUpdatedEvent(){
-          id: taskModel.id,
-          title: taskModel.title,
-          details: taskModel.details,
-          completed: taskModel.completed,
-          dueDate: taskModel.dueDate,
-          completedDate: taskModel.completedDate
+        this.taskUpdated.emit({
+          id: this.task.id,
+          title: this.task.title,
+          details: this.task.details,
+          completed: this.task.completed,
+          dueDate: this.dueDate,
+          completedDate: this.task.completedDate
         });
-        this.toastr.success('Due date updated for: ' + taskModel.title);
+
+        this.toastr.success('Due date updated for: ' + this.task.title);
         // reset permissions
         this.canEditDueDate = !this.canEditDueDate;
       },
@@ -126,6 +130,8 @@ export class Task {
   }
 
   editDetails(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
     // check permissions
     if (!this.loggedIn()) {
       this.toastr.error('You are not authorized to do this');
@@ -136,6 +142,8 @@ export class Task {
   }
 
   updateDetails(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
     // check permissions
     if (!this.loggedIn()) {
       this.toastr.error('You are not authorized to do this');
@@ -151,6 +159,8 @@ export class Task {
   }
 
   editTitle(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
     // check permissions
     if (!this.loggedIn()) {
       this.toastr.error('You are not authorized to do this');
@@ -161,6 +171,8 @@ export class Task {
   }
 
   updateTitle(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
     // check permissions
     if (!this.loggedIn()) {
       this.toastr.error('You are not authorized to do this');
