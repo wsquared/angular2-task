@@ -92,22 +92,19 @@ export class Task {
       return;
     }
 
-    let updateDueDateTaskModel = new TaskModel({
-      id: this.task.id,
-      title: this.task.title,
-      details: this.task.details,
-      dueDate: this.dueDate,
-      completed: this.task.completed,
-      completedDate: this.task.completedDate
-    });
-
     // run update due date
     this.taskService
-      .updateTask(updateDueDateTaskModel)
+      .updateTask(new TaskModel({
+        id: this.task.id,
+        title: this.task.title,
+        details: this.task.details,
+        dueDate: this.dueDate,
+        completed: this.task.completed,
+        completedDate: this.task.completedDate
+      }))
       .subscribe
       (
       res => {
-        console.log(res);
         // emit to be dispatched
         this.taskUpdated.emit({
           id: this.task.id,
@@ -149,13 +146,42 @@ export class Task {
       this.toastr.error('You are not authorized to do this');
       return;
     }
+
     // run updateDetails
+    this.taskService
+      .updateTask(new TaskModel({
+        id: this.task.id,
+        title: this.task.title,
+        details: this.details,
+        dueDate: this.task.dueDate,
+        completed: this.task.completed,
+        completedDate: this.task.completedDate
+      }))
+      .subscribe
+      (
+      res => {
+        // emit to be dispatched
+        this.taskUpdated.emit({
+          id: this.task.id,
+          title: this.task.title,
+          details: this.details,
+          completed: this.task.completed,
+          dueDate: this.task.dueDate,
+          completedDate: this.task.completedDate
+        });
 
-    // emit to be dispatched
-    this.taskUpdated.emit({ id: this.task.id, details: this.details });
+        this.toastr.success('Details updated for: ' + this.task.title);
+        // reset permissions
+        this.taskUpdated.emit({ id: this.task.id, details: this.details });
 
-    // reset permissions
-    this.canEditDetails = !this.canEditDetails;
+        // reset permissions
+        this.canEditDetails = !this.canEditDetails;
+      },
+      err => {
+        this.toastr.error('This is not good!', 'Oops!' + err);
+        this.canEditDetails = !this.canEditDetails;
+      }
+      );
   }
 
   editTitle(event: Event): void {
@@ -179,12 +205,40 @@ export class Task {
       return;
     }
     // run updateTitle
+    this.taskService
+      .updateTask(new TaskModel({
+        id: this.task.id,
+        title: this.title,
+        details: this.details,
+        dueDate: this.task.dueDate,
+        completed: this.task.completed,
+        completedDate: this.task.completedDate
+      }))
+      .subscribe
+      (
+      res => {
+        // emit to be dispatched
+        this.taskUpdated.emit({
+          id: this.task.id,
+          title: this.title,
+          details: this.task.details,
+          completed: this.task.completed,
+          dueDate: this.task.dueDate,
+          completedDate: this.task.completedDate
+        });
 
-    // emit to be dispatched
-    this.taskUpdated.emit({ id: this.task.id, title: this.title });
+        this.toastr.success('Title updated for: ' + this.task.title);
+        // reset permissions
+        this.taskUpdated.emit({ id: this.task.id, title: this.title });
 
-    // reset permissions
-    this.canEditTitle = !this.canEditTitle;
+        // reset permissions
+        this.canEditTitle = !this.canEditTitle;
+      },
+      err => {
+        this.toastr.error('This is not good!', 'Oops!' + err);
+        this.canEditTitle = !this.canEditTitle;
+      }
+      );
   }
 
   loggedIn() {
