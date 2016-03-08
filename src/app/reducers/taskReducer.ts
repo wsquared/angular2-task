@@ -18,7 +18,7 @@ export default function(state: List<TaskModel>, action: ITaskAction) {
   switch (action.type) {
     case LOAD_TASKS:
       state = action.taskList;
-      return List<TaskModel>(state).sortBy(tm => tm.dueDate);
+      return List<TaskModel>(state);
     case UPDATE_TASK:
       let index = state.findIndex((task) => task.id === action.task.id);
       return state.set(

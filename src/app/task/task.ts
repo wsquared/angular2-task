@@ -251,9 +251,4 @@ export class Task {
     };
     return moment(this.dueDate).format('DD/MM/YYYY');
   }
-
-  getCompletedDate(): string {
-    // TODO: Must be date and time
-    return this.task.completedDate ? moment(this.task.completedDate).format('DD/MM/YYYY') : '-';
-  }
 }

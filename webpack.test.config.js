@@ -70,7 +70,7 @@ module.exports = helpers.validate({
     ]
   },
   stats: { colors: true, reasons: true },
-  debug: false,
+  debug: true,
   plugins: [
     new DefinePlugin({
       // Environment helpers
